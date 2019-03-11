@@ -11,38 +11,72 @@
             src="http://m1.lefile.cn/??myStatic/slidingVerification/js/aes.js,myStatic/slidingVerification/js/jquery.slider.js,myStatic/slidingVerification/js/uc.js?v=2"></script>
     <script src="http://m1.lefile.cn/cerpglobal/zh_CN/passport/1.0.5/passport.js"></script>
     <script src="http://m1.lefile.cn??/cerpglobal/zh_CN/regist/0.0.11/regist.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="css/jquery.slider.css"/>
+    <link rel="stylesheet" type="text/css" href="css/login.css"/>
+    <script src="js/jquery.slider.min.js" type="text/javascript"></script>
+    <script src="js/login.js" type="text/javascript"></script>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            border:0;
+        }
+        .track-monitor{
+
+            background-color:orange;
+        }
+        .track-pad{
+
+            height:200px;
+            background-color:navajowhite;
+        }
+        .track-coordinate{
+
+            background-color:purple;
+            color:white;
+            height:25px;
+            line-height:25px;
+            font-size:12px;
+        }
+        .track-coordinate-list{
+            font-size:12px;
+            width:100%;
+            word-break:break-word;
+        }
+    </style>
     <script>
       window.addEventListener('load', function () {
         var pad = document.getElementsByClassName('track-pad')[0];
         var monitor = document.getElementsByClassName('track-monitor')[0];
         var coordinate = document.getElementsByClassName('track-coordinate')[0];
         var clist = document.getElementsByClassName('track-coordinate-list')[0];
-        // var reset = document.getElementsByTagName('button')[0];
-        // var context = monitor.getContext('2d');
+        var reset = document.getElementsByTagName('button')[0];
+        var context = monitor.getContext('2d');
         var cset = [];
         var startx = 0, starty = 0;
         $('div').mousedown(mouseState).mouseup(mouseState);
 
-        // function fixSize() {
-        //   monitor.width = window.innerWidth;
-        // };
+        function fixSize() {
+          monitor.width = window.innerWidth;
+        };
 
-        // function log(e) {
-        //   if (cset.length == 0) {
-        //     context.moveTo(e.x, e.y);
-        //   } else {
-        //     context.strokeStyle = 'white';
-        //     context.lineTo(e.x, e.y);
-        //     context.stroke();
-        //   }
-        //   if (e.x - startx == e.x && e.y - starty == e.y) {
-        //     startx = e.x;
-        //     starty = e.y;
-        //   }
-        //   coordinate.innerHTML = '(' + (e.x - startx) + ', ' + (e.y - starty) + ')';
-        //   cset.push(coordinate.innerHTML);
-        //   clist.innerHTML = cset.join(', ');
-        // }
+        function log(e) {
+          if (cset.length == 0) {
+            context.moveTo(e.x, e.y);
+          } else {
+            context.strokeStyle = 'white';
+            context.lineTo(e.x, e.y);
+            context.stroke();
+          }
+          if (e.x - startx == e.x && e.y - starty == e.y) {
+            startx = e.x;
+            starty = e.y;
+          }
+          coordinate.innerHTML = '(' + (e.x - startx) + ', ' + (e.y - starty) + ')';
+          cset.push(coordinate.innerHTML);
+          clist.innerHTML = cset.join(', ');
+        }
 
         function mouseState(e) {
           if (e.type == "mouseup") {
@@ -58,14 +92,14 @@
           }
         }
 
-        // reset.addEventListener('click', function () {
-        //   // fixSize();
-        //   cset = [];
-        //   clist.innerHTML = '';
-        //   // coordinate.innerHTML = '在绿色的方块中滑动鼠标';
-        // });
+        reset.addEventListener('click', function () {
+          fixSize();
+          cset = [];
+          clist.innerHTML = '';
+          coordinate.innerHTML = '在绿色的方块中滑动鼠标';
+        });
 
-        // fixSize();
+        fixSize();
       });
     </script>
 </head>
@@ -83,7 +117,17 @@
                  style="height: 50px; background-color: rgb(51, 204, 0); width: 0px;"></div>
         </div>
     </div>
+    <div class="sliderBox">
+        <div id="slider2" class="slider">
+            <!--<div id="slider_bg"></div>
+            <span id="label"><i class="rightRow"></i></span>
+            <span id="labelTip">请按住滑块，拖动到最右边</span>-->
+        </div>
+    </div>
 </div>
+<div class="track-coordinate">在绿色的方块中滑动鼠标</div>
+<canvas width="900" height="200" class="track-monitor"></canvas>
 <div id="logs"></div>
+<div class="track-coordinate-list"></div>
 </body>
 </html>
