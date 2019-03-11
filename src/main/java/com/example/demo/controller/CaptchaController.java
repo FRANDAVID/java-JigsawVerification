@@ -22,4 +22,9 @@ public class CaptchaController {
         return "login";
 
     }
+
+    @GetMapping("/slider")
+    public String slider(){
+       return "slider";
+    }
 }
