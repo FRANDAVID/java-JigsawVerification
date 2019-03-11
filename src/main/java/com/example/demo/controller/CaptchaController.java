@@ -1,19 +1,25 @@
 package com.example.demo.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * @author wuchen
  * @version 0.1
- * @date 2018/9/1 15:50
  * @use 访问滑动验证码相关页面
  */
 @Controller
 public class CaptchaController {
 
     @GetMapping("/captcha")
-    public String login(){
+    public String login(HttpServletResponse response, HttpServletRequest request){
+        String userAgent = request.getHeader("user-agent");
+        System.out.println(userAgent);
+        Cookie cookie = new Cookie("cid","2");
+        response.addCookie(cookie);
         return "login";
+
     }
 }

@@ -5,22 +5,31 @@ import com.example.demo.model.ResponseMessage;
 import com.example.demo.service.AutzQueryService;
 import com.example.demo.support.CaptchaConfig;
 import com.example.demo.support.CaptchaConst;
-import com.example.demo.util.*;
-import lombok.NonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.example.demo.util.CaptchaUtil;
+import com.example.demo.util.Resources;
+import com.example.demo.util.UtilFile;
+import com.example.demo.util.UtilString;
+import com.example.demo.util.UtilWeb;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author wuchen
@@ -62,6 +71,10 @@ public class CaptchaRestController {
         }
         String host = UtilWeb.getIpAddr(request);
         Integer veriCode = autzQueryService.getCurrentIdCaptcha(host);
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie:cookies){
+            System.out.println("cookie====>"+cookie.getName()+","+cookie.getValue());
+        }
         if ((Integer.valueOf(point) < veriCode + OFFSET) && (Integer.valueOf(point) > veriCode - OFFSET)) {
             // 验证通过后，生成一个验证码放入缓存并返回给前台
             String code = autzQueryService.putCurrentIpCode(host);

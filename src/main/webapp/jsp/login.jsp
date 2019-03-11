@@ -5,6 +5,26 @@
     <link rel="stylesheet" href="css/captcha.css">
     <script src="js/jquery.1.12.4.min.js"></script>
     <script src="js/drag.js"></script>
+    <script type="text/javascript"
+            src="js/fingerprint2.js"></script>
+    <%--src="https://cdn.jsdelivr.net/npm/fingerprintjs2@2.0.6/dist/fingerprint2.min.js"></script>--%>
+    <script>
+
+//      if (window.requestIdleCallback) {
+//        requestIdleCallback(function () {
+//          Fingerprint2.get(function (components) {
+//            console.log(number);
+//            console.log(components) // an array of components: {key: ..., value: ...}
+//          })
+//        })
+//      } else {
+//        setTimeout(function () {
+//          Fingerprint2.get(function (components) {
+//            console.log(components) // an array of components: {key: ..., value: ...}
+//          })
+//        }, 500)
+//      }
+    </script>
     <style>
         body {
             width: 100%;
@@ -58,7 +78,6 @@
         <input name="password" type="password"/>
     </div>
     <div class="form-item">
-        <input name="">
         <div class="yzm">
             <!--展示原图-->
             <div id="yzm_image_source" class="yzm_image_source"></div>
@@ -83,47 +102,64 @@
 </form>
 
 <script>
-    $(function () {
-        //初始化图形验证码
-        initYzm();
-        //注册验证码拖动事件
-        $('#drag').drag(null, null, initYzm);
-    })
+  function setCookie(value) {
+    console.log("服务器端cookie值：" + value);
+  }
 
-    function initYzm() {
-        //加载中
-        $("#xy_img").css("display", "none");
-        $("#yzm_image_source").css("display", "none");
-        $(".yzm_image_cut_big").css("display", "none");
-        $(".yzm_image_cut_loading").show();
-        $.ajax({
-            type: "POST",
-            async: true,
-            url: "captcha/captchaImage",
-            dataType: 'json',
-            success: function (result) {
-                if (result) {
-                    //设置大图，小图，及其位置
-                    $(".yzm_image_source").css("background-image", "url(captcha/image/" + result.sourceImgName + ")");
-                    $(".yzm_image_cut_big").css("background-image", "url(captcha/image/" + result.bigImgName + ")");
-                    $("#xy_img").css("background-image", "url(captcha/image/" + result.smallImgName + ")");
-                    $("#xy_img").css("top", Number(result.location_y) + "px");
-                    $(".yzm_image_cut_loading").css("display", "none");
-                    $(".yzm_image_source").show();
-                    $(".yzm_image_cut_big").css("display", "none");
-                } else {
-                    $.ligerDialog.error('获取图形验证码失败！');
-                }
-            },
-            error: function (errormsg) {
-                $.ligerDialog.error("获取图形验证码失败！");
-            }
-        });
-    }
+  function getCookie(name)
+  {
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
 
-    function login() {
+    if(arr=document.cookie.match(reg))
+
+      alert( unescape(arr[2]));
+    else
+      return null;
+  }
+
+  $(function () {
+    //初始化图形验证码
+    initYzm();
+    //注册验证码拖动事件
+    $('#drag').drag(null, null, initYzm);
+  })
+
+  function initYzm() {
+    //加载中
+    $("#xy_img").css("display", "none");
+    $("#yzm_image_source").css("display", "none");
+    $(".yzm_image_cut_big").css("display", "none");
+    $(".yzm_image_cut_loading").show();
+    $.ajax({
+      type: "POST",
+      async: true,
+      url: "captcha/captchaImage",
+      dataType: 'json',
+      success: function (result) {
+        if (result) {
+          //设置大图，小图，及其位置
+          $(".yzm_image_source").css("background-image",
+              "url(captcha/image/" + result.sourceImgName + ")");
+          $(".yzm_image_cut_big").css("background-image",
+              "url(captcha/image/" + result.bigImgName + ")");
+          $("#xy_img").css("background-image", "url(captcha/image/" + result.smallImgName + ")");
+          $("#xy_img").css("top", Number(result.location_y) + "px");
+          $(".yzm_image_cut_loading").css("display", "none");
+          $(".yzm_image_source").show();
+          $(".yzm_image_cut_big").css("display", "none");
+        } else {
+          $.ligerDialog.error('获取图形验证码失败！');
+        }
+      },
+      error: function (errormsg) {
+        $.ligerDialog.error("获取图形验证码失败！");
+      }
+    });
+  }
+
+  function login() {
 //        if($("#")})
-    }
+  }
 </script>
 </body>
 </html>
