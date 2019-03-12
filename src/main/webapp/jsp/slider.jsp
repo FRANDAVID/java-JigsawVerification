@@ -34,7 +34,7 @@
         }
         .track-pad{
 
-            height:500px;
+            height:400px;
             background-color:navajowhite;
         }
         .track-coordinate{
